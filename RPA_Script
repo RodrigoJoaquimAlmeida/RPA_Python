@@ -1,0 +1,689 @@
+import pyautogui
+import pyperclip
+import subprocess
+import time
+import os
+import psutil
+import tkinter as tk
+import pytz
+from PIL import Image, ImageTk
+from datetime import datetime
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver import ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
+from email.utils import formataddr
+from openpyxl import load_workbook
+pyautogui.FAILSAFE = True
+def encerrar_processo_word():
+ for processo in psutil.process_iter(['pid', 'name']):
+ if processo.info['name'] == 'WINWORD.EXE':
+ os.system(f"taskkill /F /PID {processo.info['pid']}")
+def encontrar_imagem(imagem):
+ while not pyautogui.locateOnScreen(imagem, grayscale=True, confidence=0.9):
+ time.sleep(5)
+ encontrou = pyautogui.locateOnScreen(imagem, grayscale=True, confidence=0.9)
+ return encontrou
+def encontrar_imagem_super(imagem):
+ while not pyautogui.locateOnScreen(imagem, grayscale=True, confidence=0.95):
+ time.sleep(5)
+ encontrou = pyautogui.locateOnScreen(imagem, grayscale=True, confidence=0.95)
+ return encontrou
+def encontrar_imagem_ultra(imagem):
+ while not pyautogui.locateOnScreen(imagem, grayscale=True, confidence=0.99):
+ time.sleep(5)
+ encontrou = pyautogui.locateOnScreen(imagem, grayscale=True, confidence=0.99)
+ return encontrou
+def encontrar_imagem_low(imagem):
+ while not pyautogui.locateOnScreen(imagem, grayscale=True, confidence=0.8):
+ time.sleep(5)
+ encontrou = pyautogui.locateOnScreen(imagem, grayscale=True, confidence=0.8)
+ return encontrou
+def escrever_texto(texto):
+ pyperclip.copy(texto)
+ pyautogui.hotkey("ctrl", "v")
+def direita(posicoes_imagem):
+ return posicoes_imagem[0] + posicoes_imagem[2], posicoes_imagem[1] +
+posicoes_imagem[3]/2
+def fechar_apos_8_segundos(janela):
+ time.sleep(8)
+ janela.destroy()
+janela = tk.Tk()
+janela.title("Boas-Vindas")
+imagem_path = "boas_vindas.png"
+imagem = Image.open(imagem_path)
+imagem = ImageTk.PhotoImage(imagem)
+label_imagem = tk.Label(janela, image=imagem)
+label_imagem.pack()
+janela.after(3000, fechar_apos_8_segundos, janela)
+janela.mainloop()
+#encerrar_processo_word()
+navegador = webdriver.Chrome()
+navegador.get("https://XXXXXXXXXXXX")
+time.sleep(5)
+pasta = "C:/Users/XXXXXXXXXX/Downloads/"
+arquivo1 = "XXXXXXXXXX.xlsx"
+arquivo2 = "XXXXXXXXXXXXX.xlsx"
+caminho_arquivo1 = os.path.join(pasta, arquivo1)
+caminho_arquivo2 = os.path.join(pasta, arquivo2)
+if os.path.exists(caminho_arquivo1):
+ os.remove(caminho_arquivo1)
+if os.path.exists(caminho_arquivo2):
+ os.remove(caminho_arquivo2)
+time.sleep(2)
+navegador.maximize_window()
+time.sleep(1)
+email = navegador.find_element(By.CLASS_NAME, "gd-input-field")
+email.send_keys("XXXXXX@mXXXXXX.com", Keys.TAB)
+senha = navegador.find_element(By.NAME, "password")
+senha.send_keys("XXXXXXX")
+confirmar = navegador.find_element(By.CLASS_NAME, "gd-button-text").click()
+time.sleep(5)
+while True:
+ try:
+ encontrou = encontrar_imagem('botao_parar.png')
+ pyautogui.click(direita(encontrou))
+ break
+ except:
+ pyautogui.ImageNotFoundException: time.sleep(1)
+ break
+time.sleep(5)
+menu_arrow_down = WebDriverWait(navegador,
+120).until(EC.visibility_of_element_located((By.CLASS_NAME, "menuArrow")))
+menu_arrow_down.click()
+time.sleep(3)
+menu_pcp = WebDriverWait(navegador, 5).until(EC.visibility_of_element_located((By.XPATH,
+"//span[@title='PCP']")))
+menu_pcp.click()
+time.sleep(3)
+menu_estoque = WebDriverWait(navegador,
+5).until(EC.visibility_of_element_located((By.XPATH, "//span[text()='Estoque']")))
+menu_estoque.click()
+time.sleep(3)
+pyautogui.press('f5')
+time.sleep(10)
+#
+/html/body/div[6]/div[5]/div[5]/div[2]/div/div[4]/div[3]/div/div/div[1]/div[3]/div/div/div[30]/d
+iv/div[3]/div/div[1]/div/div[2]/div[1]/div/div/div[4]
+xpath_do_elemento_que_ativa_o_hover =
+"/html/body/div[6]/div[5]/div[5]/div[2]/div/div[4]/div[3]/div/div/div[1]/div[3]/div/div/div[30]/
+div/div[3]/div/div[1]/div/div[2]/div[1]/div/div/div[4]"
+xpath_do_botao =
+"/html/body/div[6]/div[5]/div[5]/div[2]/div/div[4]/div[3]/div/div/div[1]/div[3]/div[1]/div/div[3
+0]/div/div[2]/a[2]"
+elemento_hover = WebDriverWait(navegador,
+120).until(EC.visibility_of_element_located((By.XPATH,
+xpath_do_elemento_que_ativa_o_hover)))
+ActionChains(navegador).move_to_element(elemento_hover).perform()
+botao = WebDriverWait(navegador, 10).until(EC.visibility_of_element_located((By.XPATH,
+xpath_do_botao)))
+botao.click()
+time.sleep(1)
+encontrou = encontrar_imagem('foto_vergonha_1.png')
+pyautogui.click(pyautogui.center(encontrou))
+time.sleep(1)
+encontrou = encontrar_imagem('foto_vergonha_2.png')
+pyautogui.click(pyautogui.center(encontrou))
+time.sleep(1)
+encontrou = encontrar_imagem_ultra('foto_vergonha_3.png')
+pyautogui.click(pyautogui.center(encontrou))
+time.sleep(1)
+encontrou = encontrar_imagem('foto_vergonha_4.png')
+pyautogui.click(pyautogui.center(encontrou))
+time.sleep(7)
+iframecontainer_2 = WebDriverWait(navegador,
+5).until(EC.visibility_of_element_located((By.XPATH,
+"/html/body/div[6]/div[5]/div[3]/button[1]")))
+hover = ActionChains(navegador).move_to_element(iframecontainer_2)
+hover.perform()
+time.sleep(2)
+menu_arrow_down = WebDriverWait(navegador,
+120).until(EC.visibility_of_element_located((By.CLASS_NAME, "menuArrow")))
+menu_arrow_down.click()
+time.sleep(2)
+menu_logistica = WebDriverWait(navegador,
+5).until(EC.visibility_of_element_located((By.XPATH, "//span[@title='GH - Logística']")))
+menu_logistica.click()
+time.sleep(2)
+menu_performance = WebDriverWait(navegador,
+5).until(EC.visibility_of_element_located((By.XPATH, "//span[text()='Performance']")))
+menu_performance.click()
+time.sleep(10)
+encontrou = encontrar_imagem('foto_vergonha_6.png')
+pyautogui.click(pyautogui.center(encontrou))
+time.sleep(2)
+encontrou = encontrar_imagem('foto_vergonha_abrir_data_from.png')
+pyautogui.click(pyautogui.center(encontrou))
+for i in range(8):
+ encontrou = encontrar_imagem('foto_vergonha_data_jan_2023.png')
+ pyautogui.click(pyautogui.center(encontrou))
+ time.sleep(1)
+encontrou = encontrar_imagem('foto_vergonha_data_jan_2023_01.png')
+pyautogui.click(pyautogui.center(encontrou))
+time.sleep(2)
+encontrou = encontrar_imagem('foto_vergonha_5.png')
+pyautogui.click(pyautogui.center(encontrou))
+time.sleep(10)
+xpath_do_elemento_que_ativa_o_hover_2 =
+"/html/body/div[6]/div[5]/div[5]/div[2]/div/div[4]/div[3]/div/div/div[1]/div[3]/div/div/div[76]/
+div/div[3]/div/div[1]/div/div[2]/div[1]/div/div[2]/div[1]"
+xpath_do_botao_2 =
+"/html/body/div[6]/div[5]/div[5]/div[2]/div/div[4]/div[3]/div/div/div[1]/div[3]/div/div/div[76]/
+div/div[2]/a[2]"
+elemento_hover_2 = WebDriverWait(navegador,
+120).until(EC.visibility_of_element_located((By.XPATH,
+xpath_do_elemento_que_ativa_o_hover_2)))
+ActionChains(navegador).move_to_element(elemento_hover_2).perform()
+time.sleep(5)
+while True:
+ try:
+ encontrou = encontrar_imagem_super('foto_vergonha_7.png')
+ pyautogui.click(pyautogui.center(encontrou))
+ break
+ except:
+ pyautogui.ImageNotFoundException: time.sleep(2)
+time.sleep(1)
+encontrou = encontrar_imagem('foto_vergonha_1.png')
+pyautogui.click(pyautogui.center(encontrou))
+time.sleep(1)
+encontrou = encontrar_imagem('foto_vergonha_2.png')
+pyautogui.click(pyautogui.center(encontrou))
+time.sleep(1)
+encontrou = encontrar_imagem_ultra('foto_vergonha_3.png')
+pyautogui.click(pyautogui.center(encontrou))
+time.sleep(1)
+encontrou = encontrar_imagem('foto_vergonha_4.png')
+pyautogui.click(pyautogui.center(encontrou))
+time.sleep(15)
+navegador.close()
+time.sleep(1)
+caminho_arquivo = "C:/Users/XXXXXXXXXXX/XXXXXXXXXX.xlsm"
+if os.path.exists(caminho_arquivo):
+ if os.name == 'nt':
+ os.system(f'start excel "{caminho_arquivo}"')
+ elif os.name == 'posix':
+ subprocess.run(['open', '-a', 'Microsoft Excel', caminho_arquivo])
+else:
+ print(f"O arquivo '{caminho_arquivo}' não existe.")
+time.sleep(6)
+pyautogui.press("enter")
+time.sleep(4)
+escrever_texto('XXXXXXXXXXXXX.xlsx')
+pyautogui.press("enter")
+time.sleep(4)
+escrever_texto('XXXXXXXXXXXXXX.xlsx')
+pyautogui.press("enter")
+time.sleep(7)
+with pyautogui.hold('ctrl'):
+ pyautogui.press('b')
+time.sleep(3)
+encontrou = encontrar_imagem('foto_vergonha_8.png')
+pyautogui.click(direita(encontrou))
+time.sleep(5)
+encerrar_processo_word()
+subprocess.Popen([r"C:\XXXXXXXX\XXXXXXXXX.exe"])
+time.sleep(5)
+try:
+ encontrou = encontrar_imagem('botao_apsdu.png')
+ pyautogui.click(direita(encontrou))
+ time.sleep(1)
+ encontrou = encontrar_imagem('botao_sigamdi.png')
+ pyautogui.click(pyautogui.center(encontrou))
+ time.sleep(1)
+except:
+ pyautogui.ImageNotFoundException: time.sleep(1)
+ try:
+ encontrou = encontrar_imagem('botao_sigacfg.png')
+ pyautogui.click(direita(encontrou))
+ time.sleep(1)
+ encontrou = encontrar_imagem('botao_sigamdi.png')
+ pyautogui.click(pyautogui.center(encontrou))
+ time.sleep(1)
+ except:
+ pyautogui.ImageNotFoundException: time.sleep(1)
+encontrou = encontrar_imagem('ok_alt.png')
+pyautogui.click(pyautogui.center(encontrou))
+time.sleep(7)
+encontrou = encontrar_imagem('nome_entrada.png')
+pyautogui.click(direita(encontrou))
+escrever_texto('XXXXXXXXXXXX')
+encontrou = encontrar_imagem('senha_entrada.png')
+pyautogui.click(direita(encontrou))
+escrever_texto('XXXX')
+encontrou = encontrar_imagem('botao_entrar.png')
+pyautogui.click((pyautogui.center(encontrou)))
+time.sleep(3)
+while True:
+ try:
+ encontrou = encontrar_imagem_ultra('foto_modulo_1_b.png')
+ pyautogui.click((pyautogui.center(encontrou)))
+ time.sleep(2)
+ break
+ except:
+ pyautogui.ImageNotFoundException:time.sleep(2)
+ try:
+ encontrou = encontrar_imagem_ultra('foto_modulo_1_d.png')
+ pyautogui.click((pyautogui.center(encontrou)))
+ time.sleep(2)
+ break
+ except:
+ pyautogui.ImageNotFoundException: time.sleep(2)
+ try:
+ encontrou = encontrar_imagem_ultra('foto_modulo_1_f.png')
+ pyautogui.click((pyautogui.center(encontrou)))
+ time.sleep(2)
+ break
+ except:
+ pyautogui.ImageNotFoundException: time.sleep(2)
+ break
+while True:
+ try:
+ encontrou = encontrar_imagem('botao_pesq_mod.png')
+ pyautogui.click((pyautogui.center(encontrou)))
+ time.sleep(2)
+ escrever_texto('OMS')
+ time.sleep(1)
+ pyautogui.press('enter')
+ time.sleep(1)
+ encontrou = encontrar_imagem('foto_modulo_1_c.png')
+ pyautogui.click((pyautogui.center(encontrou)))
+ time.sleep(1)
+ break
+ except:
+ pyautogui.ImageNotFoundException:time.sleep(2)
+ break
+while True:
+ try:
+ encontrou = encontrar_imagem('botao_select_modulo.png')
+ pyautogui.click((pyautogui.center(encontrou)))
+ time.sleep(1)
+ break
+ except:
+ pyautogui.ImageNotFoundException: time.sleep(2)
+ break
+encontrou = encontrar_imagem('foto_away.png')
+pyautogui.click((pyautogui.center(encontrou)))
+time.sleep(3)
+pyautogui.press('down')
+pyautogui.press('down')
+pyautogui.press('down')
+time.sleep(3)
+encontrou = encontrar_imagem('entrar_final.png')
+pyautogui.click((pyautogui.center(encontrou)))
+time.sleep(5)
+while True:
+ try:
+ encontrou = encontrar_imagem('botao_atualizacoes.png')
+ pyautogui.click(pyautogui.center(encontrou))
+ break
+ except:
+ pyautogui.ImageNotFoundException: time.sleep(2)
+time.sleep(9)
+encontrou = encontrar_imagem('botao_pedidos.png')
+pyautogui.click(pyautogui.center(encontrou))
+time.sleep(2)
+encontrou = encontrar_imagem('botao_pedido_venda.png')
+pyautogui.click(pyautogui.center(encontrou))
+time.sleep(14)
+while True:
+ try:
+ encontrou = encontrar_imagem('botao_opcoes_col_1.png')
+ pyautogui.click(pyautogui.center(encontrou))
+ break
+ except:
+ pyautogui.ImageNotFoundException: time.sleep(2)
+ encontrou = encontrar_imagem('botao_fechar_3.png')
+ pyautogui.click(pyautogui.center(encontrou))
+ time.sleep(7)
+time.sleep(3)
+while True:
+ try:
+ encontrou = encontrar_imagem('botao_opcoes_col_2.png')
+ pyautogui.click(pyautogui.center(encontrou))
+ break
+ except:
+ pyautogui.ImageNotFoundException: time.sleep(2)
+time.sleep(2)
+encontrou = encontrar_imagem('caixa_opcao_col.png')
+pyautogui.click(pyautogui.center(encontrou))
+pyautogui.press('space')
+time.sleep(1)
+encontrou = encontrar_imagem('botao_opcoes_col_1_1.png')
+pyautogui.click(direita(encontrou))
+wb = load_workbook(filename="XXXXXXXXXX.xlsm", data_only=True)
+ws = wb['Implantar']
+ws2 = wb['Estoque']
+for row in ws.iter_rows(min_row=1, max_col=25, max_row=3000, values_only=True):
+ if row[0] is not None:
+ for row2 in ws2.iter_rows(min_row=1, max_col=10, max_row=3000, values_only=True):
+ if row2[0] is not None and row2[0] != 0:
+ if row[9] == "P" and row[19] is not None and row[24] == row2[0] and row[6] ==
+row2[2] and (((float(row2[8]) - float(row2[9])) > row[19]) or ((float(row2[6]) - float(row2[7])) >
+row[19])):
+ while True:
+ try:
+ encontrou = encontrar_imagem('botao_opcoes_col_1_1_1.png')
+ pyautogui.click(direita(encontrou))
+ break
+ except:
+ while True:
+ try:
+ encontrou = encontrar_imagem_ultra('botao_fechar_2.png')
+ pyautogui.click(pyautogui.center(encontrou))
+ time.sleep(2)
+ try:
+ encontrou = encontrar_imagem('botao_fechar.png')
+ pyautogui.click(pyautogui.center(encontrou))
+ except:
+ break
+ break
+ except:
+ encontrou = encontrar_imagem('botao_confirmar.png')
+ pyautogui.click(pyautogui.center(encontrou))
+ time.sleep(2)
+ try:
+ encontrou = encontrar_imagem('botao_fechar.png')
+ pyautogui.click(pyautogui.center(encontrou))
+ except:
+ break
+ break
+ time.sleep(5)
+ encontrou = encontrar_imagem('botao_opcoes_col_1_1_1.png')
+ pyautogui.click(direita(encontrou))
+ break
+ time.sleep(5)
+ escrever_texto(row[5])
+ encontrou = encontrar_imagem('botao_lupa.png')
+ pyautogui.click(pyautogui.center(encontrou))
+ time.sleep(5)
+ encontrou = encontrar_imagem('botao_outras_acoes_1.png')
+ pyautogui.click(pyautogui.center(encontrou))
+ time.sleep(2)
+ encontrou = encontrar_imagem('botao_manutencao_os.png')
+ pyautogui.click(pyautogui.center(encontrou))
+ time.sleep(5)
+ encontrou = encontrar_imagem('item_00.png')
+ pyautogui.click(pyautogui.center(encontrou))
+ time.sleep(1)
+ while True:
+ try:
+ encontrou = encontrar_imagem_ultra(f'item_{row[7]}.png')
+ pyautogui.click(pyautogui.center(encontrou))
+ break
+ except:
+ pyautogui.ImageNotFoundException:\
+ pyautogui.press('down')
+ time.sleep(1)
+ time.sleep(1)
+ encontrou = encontrar_imagem('botao_select_verde.png')
+ pyautogui.click(direita(encontrou))
+ time.sleep(1)
+ pyautogui.press('space')
+ time.sleep(1)
+ encontrou = encontrar_imagem('botao_confirmar.png')
+ pyautogui.click(pyautogui.center(encontrou))
+ time.sleep(4)
+ encontrou = encontrar_imagem('botao_fechar.png')
+ pyautogui.click(pyautogui.center(encontrou))
+ time.sleep(5)
+ else:
+ pass
+wb.close()
+# time.sleep(3)
+#
+# encontrou = encontrar_imagem('botao_modulos.png')
+# pyautogui.click(pyautogui.center(encontrou))
+#
+# time.sleep(2)
+#
+# encontrou = encontrar_imagem('botao_pesquisar.png')
+# pyautogui.click(pyautogui.center(encontrou))
+#
+# time.sleep(1)
+#
+# escrever_texto('transferencia')
+#
+# time.sleep(1)
+#
+# encontrou = encontrar_imagem('botao_lupa.png')
+# pyautogui.click(pyautogui.center(encontrou))
+#
+# time.sleep(4)
+#
+# encontrou = encontrar_imagem('botao_estoque_custo.png')
+# pyautogui.click(pyautogui.center(encontrou))
+#
+# time.sleep(1)
+#
+# encontrou = encontrar_imagem('botao_transferencia_multipla.png')
+# pyautogui.click(pyautogui.center(encontrou))
+#
+# time.sleep(10)
+#
+# while True:
+# try:
+# encontrou = encontrar_imagem('botao_fechar_3.png')
+# pyautogui.click(pyautogui.center(encontrou))
+# time.sleep(2)
+# break
+#
+# except:
+# pyautogui.ImageNotFoundException: time.sleep(2)
+# break
+#
+# time.sleep(2)
+#
+# encontrou = encontrar_imagem('botao_incluir.png')
+# pyautogui.click(pyautogui.center(encontrou))
+#
+# time.sleep(1)
+#
+# encontrou = encontrar_imagem('select_MF_polo.png')
+# pyautogui.click(pyautogui.center(encontrou))
+#
+# time.sleep(1)
+#
+# encontrou = encontrar_imagem_ultra('botao_ok_ultra.png')
+# pyautogui.click(pyautogui.center(encontrou))
+#
+# time.sleep(2)
+wb = load_workbook(filename="XXXXXXXXX.xlsm", data_only=True)
+ws = wb['Implantar']
+ws2 = wb['Estoque']
+ws3 = wb['Base']
+dicionario_implantar = []
+for row in ws.iter_rows(min_row=2, max_col=25, max_row=3000, values_only=True):
+ if row[0] is not None and row[19] is not None and row[9] == "P":
+ dicionario = {}
+ chave = row[24]
+ sub_chave1 = row[6], row[0], row[5], row[7], row[19]
+ dicionario[chave] = sub_chave1
+ dicionario_implantar.append(dicionario)
+dicionario_estoque = []
+for row2 in ws2.iter_rows(min_row=2, max_col=14, max_row=3000, values_only=True):
+ if row2[0] is not None and row2[0] != 0:
+ SaldoBR = row2[6] - row2[7]
+ SaldoPOLO = row2[8] - row2[9]
+ dicionario = {}
+ chave = row2[0]
+ sub_chave1 = row2[2], SaldoBR, SaldoPOLO
+ dicionario[chave] = sub_chave1
+ dicionario_estoque.append(dicionario)
+for row3 in ws3.iter_rows(min_row=2, max_col=4, max_row=4000, values_only=True):
+ if row3[0] is not None and row3[0] != row3[2]:
+ dicionario = {row3[0]: row3[2]}
+ dicionario_estoque.append(dicionario)
+wb.close()
+lista_armazem = ["01 - EXPRESS", "02 - Armazém 02", "04 - Armazém 04", "20 - 20"]
+lista_armazem_BR = ["01 - EXPRESS", "02 - Armazém 02", "04 - Armazém 04"]
+email_body2 = ""
+testinho = []
+testinho2 = []
+for implantar in dicionario_implantar: # codigo e (armazem, filial, OP, Item OP, agrd. esq)
+ for key2, value2 in implantar.items():
+ for estoque in dicionario_estoque: #codigo e (armazem, SaldoBR, SaldoPOLO):
+ for key, value in estoque.items():
+ if isinstance(value, int):
+ if key2 == key:
+ dici = {}
+ adiciona = [key, value2[2], value2[3], value2[4], value2[0]]
+ dici[value] = adiciona
+ testinho.append(dici)
+ else:
+ if key == key2 and value[0] in lista_armazem:
+ saldo_Arm_1 = 0
+ saldo_Arm_2 = 0
+ saldo_Arm_4 = 0
+ saldo_Arm_20 = 0
+ saldo_BR = 0
+ saldo_POLO = 0
+ if value2[4] > float(value[1]):
+ if value[0] == "01 - EXPRESS" and value[0] != value2[0]:
+ saldo_Arm_1 += float(value[1])
+ if value[0] == "02 - Armazém 02" and value[0] != value2[0]:
+ saldo_Arm_2 += float(value[1])
+ if value[0] == "04 - Armazém 04" and value[0] != value2[0]:
+ saldo_Arm_4 += float(value[1])
+ if value[0] == "20 - 20" and value[0] != value2[0]:
+ saldo_Arm_20 += float(value[2])
+ saldo_BR = saldo_BR + saldo_Arm_1 + saldo_Arm_2 + saldo_Arm_4
+ armazem = value2[0]
+ if saldo_Arm_20 > value2[4]:
+ add_email = f"No Pedido {value2[2]} no Item {value2[3]}, originário na
+UNIDADE BR-153, do Armazém {armazem}, existe Estoque do CÓDIGO {key} no Armazém
+{value[0]}\n***********\n\n"
+ email_body2 += add_email
+ saldo_Arm_1 = 0
+ saldo_Arm_2 = 0
+ saldo_Arm_4 = 0
+ saldo_Arm_20 = 0
+ saldo_BR = 0
+ saldo_POLO = 0
+ if value2[4] > float(value[2]):
+ if value[0] == "01 - EXPRESS" and value[0] != value2[0]:
+ saldo_Arm_1 += float(value[1])
+ if value[0] == "02 - Armazém 02" and value[0] != value2[0]:
+ saldo_Arm_2 += float(value[1])
+ if value[0] == "04 - Armazém 04" and value[0] != value2[0]:
+ saldo_Arm_4 += float(value[1])
+ if value[0] == "20 - 20" and value[0] != value2[0]:
+ saldo_Arm_20 += float(value[2])
+ saldo_BR = saldo_BR + saldo_Arm_1 + saldo_Arm_2 + saldo_Arm_4
+ if saldo_BR > value2[4]:
+ if armazem in lista_armazem_BR:
+ add_email = f"No Pedido {value2[2]} no Item {value2[3]}, originário na
+UNIDADE BR-153, do Armazém {armazem}, existe Estoque do CÓDIGO {key} no Armazém
+{value[0]}\n***********\n\n"
+ email_body2 += add_email
+ else:
+ add_email = f"No Pedido {value2[2]} no Item {value2[3]}, originário na
+UNIDADE POLO, do Armazém {armazem}, existe Estoque do CÓDIGO {key} no Armazém
+{value[0]}\n***********\n\n"
+ email_body2 += add_email
+ if isinstance(value, int):
+ pass
+ else:
+ for ttt in testinho:
+ for yyy, xxx in ttt.items():
+ if yyy == key and xxx[0] == key2 and value[0] == "20 - 20" and value2[0] == "20 -
+20" and value[2] > xxx[3]:
+ print(f"O Pedido {xxx[1]} do Item {xxx[2]} no Armazém {xxx[4]} receberá
+{round(xxx[3] + 0.1, 2)}Kg do Código {yyy} no Armazem {value[0]} para o Código {xxx[0]}")
+ # time.sleep(3)
+ #
+ # encontrou = encontrar_imagem('botao_prod_orig.png')
+ # pyautogui.click(pyautogui.center(encontrou))
+ #
+ # pyautogui.write(str(yyy).zfill(8))
+ #
+ # time.sleep(2)
+ #
+ # pyautogui.press('tab')
+ #
+ # for i in range(4):
+ # pyautogui.press('right')
+ #
+ # pyautogui.write(str(xxx[0]).zfill(8))
+ #
+ # pyautogui.press('tab')
+ #
+ # pyautogui.press('right')
+ # pyautogui.press('right')
+ #
+ # pyautogui.write(str('20'))
+ #
+ # time.sleep(1)
+ #
+ # for i in range(6):
+ # pyautogui.press('right')
+ #
+ # pyautogui.write(str(round(xxx[3] + 0.1, 2)))
+ #
+ # time.sleep(1)
+ #
+ # pyautogui.press('tab')
+ #
+ # time.sleep(1)
+ #
+ # try:
+ # encontrou = encontrar_imagem('botao_fechar.png')
+ # pyautogui.click(pyautogui.center(encontrou))
+ # time.sleep(1)
+ # pyautogui.press('esc')
+ # time.sleep(1)
+ # encontrou = encontrar_imagem('botao_cancelar.png')
+ # pyautogui.click(pyautogui.center(encontrou))
+ # time.sleep(2)
+ # encontrou = encontrar_imagem('botao_incluir.png')
+ # pyautogui.click(pyautogui.center(encontrou))
+ # time.sleep(1)
+ # encontrou = encontrar_imagem('select_MF_polo.png')
+ # pyautogui.click(pyautogui.center(encontrou))
+ # time.sleep(1)
+ # encontrou = encontrar_imagem_ultra('botao_ok_ultra.png')
+ # pyautogui.click(pyautogui.center(encontrou))
+ # time.sleep(2)
+ # except:
+ # pyautogui.ImageNotFoundException: time.sleep(1)
+ # encontrou = encontrar_imagem('botao_salvar.png')
+ # pyautogui.click(pyautogui.center(encontrou))
+ # time.sleep(3)
+encontrou = encontrar_imagem('botao_sair.png')
+pyautogui.click(direita(encontrou))
+time.sleep(2)
+encontrou = encontrar_imagem('botao_sair_finalizar.png')
+pyautogui.click(pyautogui.center(encontrou))
+time.sleep(4)
+print(email_body2)
+smtp_server = "XXXXXXXXX"
+smtp_port = 465
+smtp_username = "XXXXXXXXXX"
+smtp_password = "XXXXXXXXXXX"
+sender_name = "MIA - Metalforte Inteligência Artificial"
+sender_email = 'XXXXXXXXX'
+recipient_email = ['XXXXXXXXXXX']
+# recipient_email = ['XXXXXXXX']
+email_subject = 'Relatório para Transferência BR -> POLO e POLO -> BR (NOVO FORMATO!!) -
+{}'.format(datetime.now(pytz.timezone('America/Sao_Paulo')).strftime('%d/%m/%Y
+%H:%M:%S'))
+email_body = f'***ATENÇÃO, ESTA É UMA MENSAGEM AUTOMÁTICA. NÃO
+RESPONDER***\n\nPrezados,\n\nSegue Relatório contendo as Transferências de Itens BR-
+>POLO & POLO->BR que constam em aberto no Relatório de
+Pedidos.\n\n{email_body2}***FAVOR NÃO RESPONDER ESTE E-MAIL.***\n\nAtenciosamente,
+\n\nMIA \nMetalforte Inteligência Artificial'
+msg = MIMEMultipart()
+msg['From'] = formataddr((sender_name, sender_email))
+msg['To'] = ', '.join(recipient_email)
+msg['Subject'] = email_subject
+msg.attach(MIMEText(email_body, 'plain'))
+with smtplib.SMTP_SSL(smtp_server, smtp_port) as server:
+ server.login(smtp_username, smtp_password)
+ server.sendmail(sender_email, recipient_email, msg.as_string())
+time.sleep(10)
